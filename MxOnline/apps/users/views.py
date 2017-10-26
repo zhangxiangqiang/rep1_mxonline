@@ -95,27 +95,33 @@ class RegisterView(View):
     def get(self, request):
         register_form = RegisterForm()
         return render(request, 'register.html', {'register_form': register_form})
-
+# 由于RegisterView没有判重，自己试着加一个逻辑
     def post(self, request):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
             user_name = request.POST.get("email", "")
             pass_word = request.POST.get("password", "")
-            user_profile = UserProfile()
-            user_profile.username = user_name
-            user_profile.email = user_name
-            user_profile.is_active = False
-            user_profile.password = make_password(pass_word)
-            user_profile.save()
+            # 自己加的判重逻辑
+            user = UserProfile.objects.filter(Q(username=user_name) | Q(email=user_name))
+            if user:
+                return render(request, 'register.html', {'register_form': register_form, 'msg': '用户名已存在'})
 
-            # 发送用户信息
-            user_message = UserMessage()
-            user_message.user = user_profile.id
-            user_message.message = "欢迎注册慕课网"
-            user_message.save()
+            else:
+                user_profile = UserProfile()
+                user_profile.username = user_name
+                user_profile.email = user_name
+                user_profile.is_active = False
+                user_profile.password = make_password(pass_word)
+                user_profile.save()
 
-            send_register_email(user_name, "register")
-            return render(request, "login.html")
+                # 发送用户信息
+                user_message = UserMessage()
+                user_message.user = user_profile.id
+                user_message.message = "欢迎注册慕课网"
+                user_message.save()
+
+                send_register_email(user_name, "register")
+                return render(request, "login.html", {'msg': '邮件已发送，请到邮箱激活你的账号'})
         else:
              return render(request, 'register.html', {'register_form': register_form})
 

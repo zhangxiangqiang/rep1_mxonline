@@ -19,6 +19,7 @@ from django.views.static import serve
 
 import users
 from MxOnline.settings import MEDIA_ROOT
+# from MxOnline.settings import STATIC_ROOT
 import xadmin
 from django.views.generic import TemplateView
 
@@ -28,7 +29,7 @@ from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, 
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^index/$', IndexView.as_view(), name="index"),
+    url(r'^$', IndexView.as_view(), name="index"),
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^register/$', RegisterView.as_view(), name="register"),
@@ -44,14 +45,14 @@ urlpatterns = [
     url(r'^course/', include('courses.urls', namespace='course')),
     #   上传文件的访问处理
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-#     全局404和500处理
-#     url(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
+
+    # url(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
 # 用户相关
     url(r'^users/', include('users.urls', namespace='users')),
 #     集成富文本
-    url(r'^ueditor/',include('DjangoUeditor.urls' )),
+    url(r'^ueditor/', include('DjangoUeditor.urls' )),
 ]
-
+#     全局404和500处理
 handler404 = 'users.views.page_not_found'
 handler500 = 'users.views.page_error'
 

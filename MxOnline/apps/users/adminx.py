@@ -15,8 +15,8 @@ xadmin.site.register(views.BaseAdminView, BaseSetting)
 
 
 class GlobalSettings(object):
-    site_title = "慕学后台管理系统"
-    site_footer = "慕学在线网"
+    site_title = "学而强台管理系统"
+    site_footer = "学而强在线网"
     menu_style = "accordion"
 xadmin.site.register(views.CommAdminView, GlobalSettings)
 

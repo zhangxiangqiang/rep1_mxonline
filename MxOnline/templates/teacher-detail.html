@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load staticfiles %}
-{% block title %}慕学在线网 - 课程讲师详情{% endblock %}
+{% block title %}学而强- 课程讲师详情{% endblock %}
 {% block custom_bread %}
         <section>
         <div class="wp">
@@ -30,7 +30,7 @@
                                      {% if has_teacher_fav %}已收藏{% else %}收藏{% endif %}
                                 </span>
                                 <span class="fr btn2 shareBtn bdsharebuttonbox"
-                                      data-text="授课教师-李老师-慕学网"
+                                      data-text="授课教师-李老师-学而强"
                                       data-desc="我在#慕课网#发现了"
                                       data-comment="李老师，工作年限：5年；学历：本科；所在公司：阿里巴巴&nbsp;；经典案例：django入门和深入；flask入门"
                                       data-url="/diary/hk_detail/10/">
@@ -156,7 +156,7 @@ function add_fav(current_elem, fav_id, fav_type){
         success: function(data) {
             if(data.status == 'fail'){
                 if(data.msg == '用户未登录'){
-                    window.location.href="login.html";
+                    window.location.href="{% url 'login' %}";
                 }else{
                     alert(data.msg)
                 }
